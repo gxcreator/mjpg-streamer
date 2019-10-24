@@ -1,5 +1,20 @@
-mjpg-streamer
+mjpg-streamer with performace tweaks for YUYV cameras on arm CPUs
 =============
+
+Fork features:
+
+**Implemented:**
+- libjpeg turbo with neon SIMD
+- fast DCT
+- YCbCr color space instead of RGB to reduce conversion complexity(YUYV -> YCbCr -> JPEG subsample instead of YUYU -> RGB -> JPEG subsample)
+- GCC tweaks for armv7l + neon + vfp4
+
+**Known improvements could be done:**
+- Vectorize YUYV->YCbCr conversion
+- do not memcpy v4l buffers
+
+**Current build loads ~15% of AllWinner H2 cpu vs Original one with ~35-40%. Test running with 640x480@30 YUYV Usb camera**
+
 
 This is a fork of http://sourceforge.net/projects/mjpg-streamer/ with added support for the Raspberry Pi camera via the input_raspicam plugin.
 
