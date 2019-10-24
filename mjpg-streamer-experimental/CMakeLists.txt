@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 2.8.3)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 project("mjpg-streamer" C)
+#-march=armv7-a -mcpu=cortex-a9 -mfpu=neon -mfloat-abi=softfp -ftree-vectorize -mvectorize-with-neon-quad -ftree-vectorizer-verbose=2
+set (CMAKE_C_FLAGS "-fno-omit-frame-pointer -O3 -mtune=cortex-a7 -mcpu=cortex-a7 -mfloat-abi=hard -mfpu=neon-vfpv4 -funsafe-loop-optimizations -funsafe-math-optimizations -ffast-math -fopt-info-vec-optimized -mvectorize-with-neon-quad ")
+
+find_package(Threads)
 
 # If the user doesn't manually specify a build type, use 'Release'
 message("CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
@@ -49,10 +53,19 @@ set (MJPG_STREAMER_PLUGIN_INSTALL_PATH "lib/mjpg-streamer")
 # Global dependencies
 #
 
-find_library(JPEG_LIB jpeg)
 
+set(ENABLE_SHARED FALSE)
+set(WITH_TURBOJPEG FALSE)
+set(WITH_12BIT FALSE)
+#find_library(JPEG_LIB jpeg)
+add_subdirectory(libjpeg-turbo)
+#link_directories(libjpeg-turbo)
 
-#
+# set_property(TARGET libjpet-turbo PROPERTY IMPORTED_LOCATION libjpeg-turbo/libjpeg.a)
+
+#find_library(JPEG_LIB NAMES "libjpeg.a" PATHS ${PROJECT_BIN_DIR}/libjpeg-turbo NO_DEFAULT_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_ENVIROMENT_PATH NO_CMAKE_SYSTEM_PATH ONLY_CMAKE_FIND_ROOT_PATH)
+set(JPEG_LIB ${CMAKE_BINARY_DIR}/libjpeg-turbo/libjpeg.a)
+message(STATUS ${JPEG_LIB})#
 # Input plugins
 #
 

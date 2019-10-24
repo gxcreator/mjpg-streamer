@@ -654,9 +654,9 @@ int uvcGrab(struct vdIn *vd)
     case V4L2_PIX_FMT_YUYV:
     case V4L2_PIX_FMT_UYVY:
         if(vd->buf.bytesused > vd->framesizeIn) {
-            memcpy(vd->framebuffer, vd->mem[vd->buf.index], (size_t) vd->framesizeIn);
+            __builtin_memcpy(vd->framebuffer, vd->mem[vd->buf.index], (size_t) vd->framesizeIn);
         } else {
-            memcpy(vd->framebuffer, vd->mem[vd->buf.index], (size_t) vd->buf.bytesused);
+            __builtin_memcpy(vd->framebuffer, vd->mem[vd->buf.index], (size_t) vd->buf.bytesused);
         }
         vd->tmpbytesused = vd->buf.bytesused;
         vd->tmptimestamp = vd->buf.timestamp;
